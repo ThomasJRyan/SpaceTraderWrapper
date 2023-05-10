@@ -2,92 +2,92 @@ from spacetrader_wrapper import api, models
 from spacetrader_wrapper.config import BaseConfig, ProdConfig
 
 
-class Client():
+class Client:
     def __init__(self, token: str, config: BaseConfig = ProdConfig()):
         self.token = token
         self.config = config
-        self.config.HEADER.update({
-            "Authorization": f"Bearer {token}"
-        })
-        
-    #---------------------------
+        self.config.HEADER.update({"Authorization": f"Bearer {token}"})
+
+    # ---------------------------
     #     Agent
-    #---------------------------
-    
+    # ---------------------------
+
     @classmethod
     def register(cls, symbol: str, faction: str, config: BaseConfig = ProdConfig()):
         data = models.Registration(symbol=symbol, faction=faction)
         res = api.agent.register_agent(data, config)
         assert res.status_code == 201, "Registration did not succeed"
-        return cls(res.json()['data']['token'])
-        
+        return cls(res.json()["data"]["token"])
+
     @property
     def agent(self) -> models.Agent:
         return api.agent.get_agent(self.config)
-    
-    #---------------------------
+
+    # ---------------------------
     #     Systems
-    #---------------------------
-    
+    # ---------------------------
+
     def list_systems(self) -> list[models.System]:
         return api.systems.list_systems(self.config)
-    
+
     def get_system(self, systemSymbol: str) -> models.System:
         return api.systems.get_system(self.config, systemSymbol)
-    
+
     def list_waypoints(self, systemSymbol: str) -> list[models.Waypoint]:
         return api.systems.list_waypoints(self.config, systemSymbol)
-    
+
     def get_waypoint(self, systemSymbol: str, waypointSymbol: str) -> models.Waypoint:
         return api.systems.get_waypoint(self.config, systemSymbol, waypointSymbol)
-    
+
     def get_market(self, systemSymbol: str, waypointSymbol: str) -> models.Market:
         return api.systems.get_market(self.config, systemSymbol, waypointSymbol)
-    
+
     def get_shipyard(self, systemSymbol: str, waypointSymbol: str) -> models.Shipyard:
         return api.systems.get_shipyard(self.config, systemSymbol, waypointSymbol)
-    
+
     def get_jump_gate(self, systemSymbol: str, waypointSymbol: str) -> models.JumpGate:
         return api.systems.get_jump_gate(self.config, systemSymbol, waypointSymbol)
-    
-    #---------------------------
+
+    # ---------------------------
     #     Factions
-    #---------------------------
-    
+    # ---------------------------
+
     def list_factions(self) -> list[models.Faction]:
         return api.factions.list(self.config)
-    
+
     def get_faction(self, factionSymbol: str) -> list[models.Faction]:
         return api.factions.get_agent(self.config, factionSymbol)
-    
-    #---------------------------
+
+    # ---------------------------
     #     Contracts
-    #---------------------------
-    
+    # ---------------------------
+
     def list_contracts(self) -> list[models.Contract]:
         return api.contracts.list(self.config)
-    
+
     def get_contract(self, contractSymbol: str) -> models.Contract:
         return api.contracts.get_agent(self.config, contractSymbol)
-    
+
     def accept_contract(self, contractSymbol: str) -> api.contracts.ContractResponse:
         return api.contracts.accept(self.config, contractSymbol)
-    
-    def deliver_contract(self, contractSymbol: str, shipSymbol: str, tradeSymbol: str, units: int) -> api.contracts.ContractResponse:
+
+    def deliver_contract(
+        self, contractSymbol: str, shipSymbol: str, tradeSymbol: str, units: int
+    ) -> api.contracts.ContractResponse:
         delivery = models.Delivery(
             shipSymbol=shipSymbol,
             tradeSymbol=tradeSymbol,
             units=units,
         )
         return api.contracts.deliver(self.config, contractSymbol, delivery)
-        
+
     def fulfill_contract(self, contractSymbol: str) -> api.contracts.ContractResponse:
         return api.contracts.fulfill(self.config, contractSymbol)
-    
-    #---------------------------
+
+    # ---------------------------
     #     Fleet
-    #---------------------------
-    
+    # ---------------------------
+
     def list_ships(self):
         return api.fleet.list_ships(self.config)
 
@@ -165,10 +165,12 @@ class Client():
         cargo_purchase = models.ExtractionYield(symbol=symbol, units=units)
         return api.fleet.purchase_cargo(self.config, shipSymbol, cargo_purchase)
 
-    def transfer_cargo(self, shipSymbol: str, shipSymbolTo: str, tradeSymbol: str, units: int):
+    def transfer_cargo(
+        self, shipSymbol: str, shipSymbolTo: str, tradeSymbol: str, units: int
+    ):
         cargo_transfer = models.Delivery(
-            shipSymbolTo=shipSymbolTo
-            tradeSymbol=tradeSymbol
-            units=units
+            shipSymbolTo=shipSymbolTo,
+            tradeSymbol=tradeSymbol,
+            units=units,
         )
         return api.fleet.transfer_cargo(self.config, shipSymbol, cargo_transfer)

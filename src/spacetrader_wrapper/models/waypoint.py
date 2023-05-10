@@ -5,6 +5,7 @@ from .faction import Faction
 from .waypoint_trait import WaypointTrait
 from .waypoint_orbital import WaypointOrbital
 
+
 class Waypoint(BaseModel):
     symbol: str
     type: str

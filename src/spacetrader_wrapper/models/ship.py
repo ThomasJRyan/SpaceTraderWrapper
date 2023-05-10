@@ -11,6 +11,7 @@ from .ship_mount import ShipMount
 from .ship_cargo import ShipCargo
 from .ship_fuel import ShipFuel
 
+
 class Ship(BaseModel):
     symbol: str = None
     registration: ShipRegistration = None

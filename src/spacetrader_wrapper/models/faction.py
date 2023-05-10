@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 from .faction_trait import FactionTrait
 
+
 class Faction(BaseModel):
     symbol: str
     name: str = None

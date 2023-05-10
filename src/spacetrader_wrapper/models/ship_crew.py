@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class ShipCrew(BaseModel):
     current: int
     required: int

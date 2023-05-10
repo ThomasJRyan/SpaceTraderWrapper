@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class ConnectedSystems(BaseModel):
     symbol: str
     sectorSymbol: str

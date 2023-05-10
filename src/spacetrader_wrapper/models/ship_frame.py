@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 from .ship_requirements import ShipRequirements
 
+
 class ShipFrame(BaseModel):
     symbol: str
     name: str

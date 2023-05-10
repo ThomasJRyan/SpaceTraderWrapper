@@ -4,6 +4,7 @@ from pydantic import BaseModel
 
 from .survey_deposit import SurveyDeposit
 
+
 class Survey(BaseModel):
     signature: str
     symbol: str

@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 
+
 class ShipNavRouteWaypoint(BaseModel):
     symbol: str
     type: str

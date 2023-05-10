@@ -4,6 +4,7 @@ from .ship_type import ShipType
 from .shipyard_transaction import ShipyardTransaction
 from .ship import Ship
 
+
 class Shipyard(BaseModel):
     symbol: str
     shipTypes: list[ShipType] = None

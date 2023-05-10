@@ -4,6 +4,7 @@ from .trade_good import TradeGood
 from .market_trade_good import MarketTradeGood
 from .market_transaction import MarketTransaction
 
+
 class Market(BaseModel):
     symbol: str
     exports: list[TradeGood]

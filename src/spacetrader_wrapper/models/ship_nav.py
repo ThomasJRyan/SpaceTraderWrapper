@@ -2,6 +2,7 @@ from pydantic import BaseModel
 
 from .ship_nav_route import ShipNavRoute
 
+
 class ShipNav(BaseModel):
     systemSymbol: str
     waypointSymbol: str

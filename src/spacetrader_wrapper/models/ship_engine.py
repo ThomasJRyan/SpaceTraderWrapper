@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 from .ship_requirements import ShipRequirements
 
+
 class ShipEngine(BaseModel):
     symbol: str
     name: str
