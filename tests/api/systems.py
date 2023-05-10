@@ -4,10 +4,32 @@ import datetime
 from spacetrader_wrapper import Client
 from spacetrader_wrapper.config import TestConfig
 
-class TestOrbitals(unittest.TestCase):
+class TestSystems(unittest.TestCase):
     def setUp(self):
         self.client = Client('', config=TestConfig)
     
+    def test_list_systems(self):
+        systems = self.client.list_systems()
+        self.assertEqual(len(systems), 1)
+        
+        system = systems[0]
+        self.assertEqual(system.dict(), {'symbol': 'string', 'sectorSymbol': 'string', 'type': 'NEUTRON_STAR', 'x': 0, 'y': 0, 'waypoints': [{'symbol': 'string', 'type': 'PLANET', 'x': 0, 'y': 0, 'systemSymbol': None, 'orbitals': None, 'faction': None, 'traits': None, 'chart': None}], 'factions': [{'symbol': 'string', 'name': None, 'description': None, 'headquarters': None, 'traits': None}]})
+        
+    def test_get_system(self):
+        system = self.client.get_system('string')
+        self.assertEqual(system.dict(), {'symbol': 'string', 'sectorSymbol': 'string', 'type': 'NEUTRON_STAR', 'x': 0, 'y': 0, 'waypoints': [{'symbol': 'string', 'type': 'PLANET', 'x': 0, 'y': 0, 'systemSymbol': None, 'orbitals': None, 'faction': None, 'traits': None, 'chart': None}], 'factions': [{'symbol': 'string', 'name': None, 'description': None, 'headquarters': None, 'traits': None}]})
+        
+    def test_list_waypoints(self):
+        waypoints = self.client.list_waypoints('string')
+        self.assertEqual(len(waypoints), 1)
+        
+        waypoint = waypoints[0]
+        self.assertEqual(waypoint.dict(), {'symbol': 'string', 'type': 'PLANET', 'x': 0, 'y': 0, 'systemSymbol': 'string', 'orbitals': [{'symbol': 'string'}], 'faction': {'symbol': 'string', 'name': None, 'description': None, 'headquarters': None, 'traits': None}, 'traits': [{'symbol': 'UNCHARTED', 'name': 'string', 'description': 'string'}], 'chart': {'waypointSymbol': 'string', 'submittedBy': 'string', 'submittedOn': datetime.datetime(2019, 8, 24, 14, 15, 22, tzinfo=datetime.timezone.utc)}})
+        
+    def test_get_waypoint(self):
+        waypoint = self.client.get_waypoint('string', 'string')
+        self.assertEqual(waypoint.dict(), {'symbol': 'string', 'type': 'PLANET', 'x': 0, 'y': 0, 'systemSymbol': 'string', 'orbitals': [{'symbol': 'string'}], 'faction': {'symbol': 'string', 'name': None, 'description': None, 'headquarters': None, 'traits': None}, 'traits': [{'symbol': 'UNCHARTED', 'name': 'string', 'description': 'string'}], 'chart': {'waypointSymbol': 'string', 'submittedBy': 'string', 'submittedOn': datetime.datetime(2019, 8, 24, 14, 15, 22, tzinfo=datetime.timezone.utc)}})
+        
     def test_get_market(self):
         market = self.client.get_market('string', 'string')
         self.assertEqual(market.dict(), {'symbol': 'string', 'exports': [{'symbol': 'PRECIOUS_STONES', 'name': 'string', 'description': 'string'}], 'imports': [{'symbol': 'PRECIOUS_STONES', 'name': 'string', 'description': 'string'}], 'exchange': [{'symbol': 'PRECIOUS_STONES', 'name': 'string', 'description': 'string'}], 'transactions': [{'waypointSymbol': 'string', 'shipSymbol': 'string', 'tradeSymbol': 'string', 'type': 'PURCHASE', 'units': 1, 'pricePerUnit': 1, 'totalPrice': 1, 'timestamp': datetime.datetime(2019, 8, 24, 14, 15, 22, tzinfo=datetime.timezone.utc)}], 'tradeGoods': [{'symbol': 'string', 'tradeVolume': 1, 'supply': 'SCARCE', 'purchasePrice': 0, 'sellPrice': 0}]})

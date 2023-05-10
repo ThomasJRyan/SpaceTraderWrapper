@@ -8,10 +8,9 @@ from spacetrader_wrapper.config import BaseConfig
 
 class ContractResponse(BaseModel):
     agent: Optional[models.Agent]
-    contract: models.Contract
+    contract: Optional[models.Contract]
     cargo: Optional[models.ShipCargo]
-
-
+    
 def list(config: BaseConfig):
     res = _get(
         '/my/contracts',
@@ -19,7 +18,7 @@ def list(config: BaseConfig):
     )
     return parse_obj_as(List[models.Contract], res.json()['data'])
 
-def get(config: BaseConfig, contractSymbol: str):
+def get_agent(config: BaseConfig, contractSymbol: str):
     res = _get(
         f'/my/contracts/{contractSymbol}',
         config=config,

@@ -19,3 +19,12 @@ def _post(endpoint, *args, config: BaseConfig, **kwargs):
             headers=config.HEADER, 
             **kwargs)
     return res
+
+def _patch(endpoint, *args, config: BaseConfig, **kwargs):
+    with requests.session() as s:
+        res = s.patch(
+            *args, 
+            url=f"{config.BASE_URL}/{endpoint}",
+            headers=config.HEADER, 
+            **kwargs)
+    return res

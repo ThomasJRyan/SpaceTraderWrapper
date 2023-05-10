@@ -12,7 +12,7 @@ def list(config: BaseConfig):
     )
     return parse_obj_as(List[models.Faction], res.json()['data'])
 
-def get(config: BaseConfig, factionSymbol: str):
+def get_agent(config: BaseConfig, factionSymbol: str):
     res = _get(
         f'/factions/{factionSymbol}',
         config=config,
