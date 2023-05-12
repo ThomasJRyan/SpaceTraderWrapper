@@ -15,12 +15,12 @@ from .ship_fuel import ShipFuel
 class Ship(BaseModel):
     symbol: str = None
     registration: ShipRegistration = None
-    nav: list[ShipNav] = None
+    nav: ShipNav = None
     crew: ShipCrew = None
     frame: ShipFrame
     reactor: ShipReactor
     engine: ShipEngine
-    modules: list[ShipModule]
+    modules: list[ShipModule] = None
     mounts: list[ShipMount]
     cargo: ShipCargo = None
     fuel: ShipFuel = None

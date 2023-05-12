@@ -169,7 +169,7 @@ class Client:
         self, shipSymbol: str, shipSymbolTo: str, tradeSymbol: str, units: int
     ):
         cargo_transfer = models.Delivery(
-            shipSymbolTo=shipSymbolTo,
+            shipSymbol=shipSymbolTo,
             tradeSymbol=tradeSymbol,
             units=units,
         )

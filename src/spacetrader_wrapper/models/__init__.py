@@ -19,4 +19,6 @@ from .survey import Survey
 from .extraction import Extraction
 from .extraction_yield import ExtractionYield
 from .ship_fuel import ShipFuel
+from .market_transaction import MarketTransaction
+from .connected_systems import ConnectedSystems
 from . import constants

@@ -1,3 +1,5 @@
+import json
+
 from typing import List, Optional, Any
 from pydantic import parse_obj_as, BaseModel
 
@@ -9,19 +11,31 @@ from spacetrader_wrapper.config import BaseConfig
 class FleetResponse(BaseModel):
     agent: Optional[models.Agent]
     ship: Optional[models.Ship]
-    transaction: Optional[models.ShipyardTransaction]
+    ships: Optional[List[models.Ship]]
+    transaction: Optional[models.ShipyardTransaction | models.MarketTransaction]
     cargo: Optional[models.ShipCargo]
     cooldown: Optional[models.Cooldown]
-    produced: List[dict[str, Any]]
-    consumed: List[dict[str, Any]]
-    chart: models.Chart
-    waypoint: models.Waypoint
-    surveys: List[models.Survey]
-    extraction: models.Extraction
-    nav: models.ShipNav
-    fuel: models.ShipFuel
-    systems: List[models.System]
-
+    produced: Optional[List[dict[str, Any]]]
+    consumed: Optional[List[dict[str, Any]]]
+    chart: Optional[models.Chart]
+    waypoint: Optional[models.Waypoint]
+    waypoints: Optional[List[models.Waypoint]]
+    surveys: Optional[List[models.Survey]]
+    extraction: Optional[models.Extraction]
+    nav: Optional[models.ShipNav]
+    fuel: Optional[models.ShipFuel]
+    systems: Optional[List[models.System] | List[models.ConnectedSystems]]
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        dict_copy = self.__dict__.copy()
+        for key, val in dict_copy.items():
+            if val is None:
+                delattr(self, key)
+        # print(self.__dict__)
+        # print({k:v for k,v in self.__dict__.items() if v})
+        # print(self.__dict__)
+    
 
 def list_ships(config: BaseConfig):
     res = _get(
@@ -57,7 +71,7 @@ def orbit_ship(config: BaseConfig, shipSymbol: str):
         f"/my/ships/{shipSymbol}/orbit",
         config=config,
     )
-    return parse_obj_as(models.ShipNav, res.json()["data"])
+    return parse_obj_as(FleetResponse, res.json()["data"])
 
 
 def ship_refine(
@@ -92,7 +106,7 @@ def dock_ship(config: BaseConfig, shipSymbol: str):
         f"/my/ships/{shipSymbol}/dock",
         config=config,
     )
-    return parse_obj_as(models.ShipNav, res.json()["data"])
+    return parse_obj_as(FleetResponse, res.json()["data"])
 
 
 def create_survey(config: BaseConfig, shipSymbol: str):
@@ -104,7 +118,7 @@ def create_survey(config: BaseConfig, shipSymbol: str):
 
 
 def extract_resources(config: BaseConfig, shipSymbol: str, survey: models.Survey):
-    res = _post(f"/my/ships/{shipSymbol}/extract", config=config, json=survey.dict())
+    res = _post(f"/my/ships/{shipSymbol}/extract", config=config, json=json.loads(survey.json()))
     return parse_obj_as(FleetResponse, res.json()["data"])
 
 
@@ -112,7 +126,7 @@ def jettison_cargo(
     config: BaseConfig, shipSymbol: str, jettison: models.ExtractionYield
 ):
     res = _post(f"/my/ships/{shipSymbol}/jettison", config=config, json=jettison.dict())
-    return parse_obj_as(models.ShipCargo, res.json()["data"])
+    return parse_obj_as(FleetResponse, res.json()["data"])
 
 
 def jump_ship(config: BaseConfig, shipSymbol: str, systemSymbol: str):

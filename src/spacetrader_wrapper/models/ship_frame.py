@@ -5,10 +5,10 @@ from .ship_requirements import ShipRequirements
 
 class ShipFrame(BaseModel):
     symbol: str
-    name: str
-    description: str
+    name: str = None
+    description: str = None
     condition: int = None
-    moduleSlots: int
-    mountingPoints: int
-    fuelCapacity: int
-    requirements: ShipRequirements
+    moduleSlots: int = None
+    mountingPoints: int = None
+    fuelCapacity: int = None
+    requirements: ShipRequirements = None
